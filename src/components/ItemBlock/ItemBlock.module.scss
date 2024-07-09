@@ -1,0 +1,267 @@
+@import '../../scss/variables';
+@import '../../scss/normalize';
+
+.itemBlock {
+  width: auto;
+  margin: 10px 0 0 0;
+  height: 400px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.container {
+  position: relative;
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  @media (max-width: 500px) {
+    padding: 15px 10px;
+  }
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 500;
+  max-height: 63px;
+  overflow: hidden;
+
+  @media (max-width: 500px) {
+    font-size: 15px;
+  }
+}
+
+.tags {
+  font-size: 15px;
+  font-weight: 300;
+  font-style: italic;
+  color: #777;
+  max-height: 58px;
+  overflow: hidden;
+
+  @media (max-width: 500px) {
+    font-size: 14px;
+  }
+}
+
+.titleFlex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 5px;
+}
+
+.rating {
+  display: flex;
+  min-width: 55px;
+  margin-left: 4px;
+  align-items: center;
+  justify-content: center;
+  background-color: #f4f4f4;
+  width: 50px;
+  height: 29px;
+  border-radius: 15px;
+  color: #666;
+
+  @media (max-width: 590px) {
+    position: absolute;
+    top: 140px;
+    right: 20px;
+  }
+
+  @media (max-width: 500px) {
+    right: 10px;
+  }
+
+  span {
+    font-size: 15px;
+  }
+
+  svg {
+    path {
+      fill: #666;
+    }
+  }
+
+  span {
+    padding-top: 1px;
+  }
+
+  &:hover {
+    cursor: default;
+  }
+}
+
+.itemBlockBottom {
+  position: relative;
+}
+
+.liquorImg {
+  height: 160px;
+  width: 106px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.heartIcon {
+  position: absolute;
+  top: 0;
+  right: 12px;
+  display: block;
+  fill: transparent;
+  stroke: #c4c4c4;
+  stroke-width: 1.5;
+
+  @media (max-width: 590px) {
+    position: absolute;
+    top: 40px;
+    right: 10px;
+  }
+
+  &:hover {
+    path {
+      stroke: $red;
+    }
+  }
+
+  &.active {
+    path {
+      fill: $red;
+      stroke: $red;
+    }
+  }
+}
+
+.price {
+  display: block;
+  text-align: center;
+  font-size: 20px;
+  margin: 0 auto 10px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 0 18px;
+  width: 130px;
+  height: 35px;
+  border: 1px solid #fe5f1e;
+  border-radius: 30px;
+  background-color: #fff;
+  font-weight: 300;
+  font-size: 16px;
+  color: #fe5f1e;
+  cursor: pointer;
+  @include noselect();
+
+  &:hover {
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  }
+
+  &NonZero {
+    cursor: default !important;
+  }
+
+  &Counter {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    // display: flex;
+    // align-items: center;
+    // justify-content: space-between;
+    svg {
+      path {
+        fill: #fe5f1e;
+      }
+    }
+
+    &:hover {
+      path {
+        fill: darken(#fe5f1e, 10%);
+      }
+    }
+  }
+}
+
+$base-color: #eee;
+$shine-color: #e8e8e8;
+$animation-duration: 1.6s;
+$avatar-offset: 52 + 16;
+
+@mixin background-gradient {
+  background-image: linear-gradient(
+    90deg,
+    $base-color 0px,
+    $shine-color 40px,
+    $base-color 80px
+  );
+  background-size: 600px;
+}
+
+@keyframes shine-lines {
+  0% {
+    background-position: -100px;
+  }
+
+  40%,
+  100% {
+    background-position: 260px;
+  }
+}
+
+.skeleton {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &Title,
+  &Tags,
+  &Img,
+  &Price,
+  &Btn {
+    background-color: #f3f3f3;
+    border-radius: 10px;
+
+    @include background-gradient;
+    animation: shine-lines $animation-duration infinite linear;
+  }
+
+  &Title {
+    height: 20px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  &Tags {
+    height: 18px;
+    width: 100%;
+    margin-bottom: 60px;
+  }
+
+  &Img {
+    height: 160px;
+    width: 40%;
+    margin-bottom: 30px;
+  }
+
+  &Price {
+    height: 30px;
+    width: 30%;
+    margin-bottom: 10px;
+  }
+
+  &Btn {
+    width: 60%;
+    height: 40px;
+  }
+}

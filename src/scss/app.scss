@@ -1,0 +1,36 @@
+@import 'variables';
+@import 'normalize';
+// @import 'button';
+
+html {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+body {
+  overflow: visible;
+}
+
+.content {
+  height: auto;
+}
+
+.wrapper {
+  position: relative;
+  // display: flex;
+  // flex-direction: column;
+  width: calc(100vw - 80px);
+  min-height: 100vh;
+  height: 100%;
+  margin: 0 auto;
+  max-width: 1154px;
+  background-color: #fff;
+
+  @media (max-width: 760px) {
+    width: calc(100vw - 40px);
+  }
+
+  // @media (max-width: 570px) {
+  //   width: calc(100vw - 15px);
+  // }
+}

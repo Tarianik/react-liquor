@@ -1,0 +1,73 @@
+@import '../../scss/variables';
+@import '../../scss/normalize';
+.sort {
+  position: relative;
+  @include noselect();
+
+  &.active {
+    .toggleIcon {
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  b {
+    padding-left: 10px;
+  }
+
+  span {
+    padding-left: 6px;
+    color: $red;
+
+    &:hover {
+      color: scale-color($color: $red, $lightness: -15%);
+    }
+  }
+
+  @media (max-width: 500px) {
+    i,
+    b {
+      display: none;
+    }
+
+    span {
+      padding-left: 45px;
+    }
+  }
+}
+
+.toggleIcon {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border: solid black;
+  border-width: 1px 1px 0 0;
+  transform: rotate(135deg);
+}
+
+.sortPopup {
+  border-radius: 5%;
+  z-index: 1;
+  position: absolute;
+  border: 1px solid #ccc;
+  width: 160px;
+  padding: 4px 0;
+  background-color: #fff;
+  top: 20px;
+  left: 100px;
+
+  li {
+    padding: 4px 0 4px 10px;
+
+    &:hover,
+    &.active {
+      background-color: scale-color($red, $lightness: 90%);
+    }
+  }
+}

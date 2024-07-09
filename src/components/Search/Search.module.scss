@@ -1,0 +1,44 @@
+@import '../../scss/variables';
+@import '../../scss/normalize';
+
+.search {
+  display: flex;
+  align-items: center;
+  position: relative;
+  @include noselect();
+
+  .searchBar {
+    // width: 440px;
+    width: 100%;
+    height: 47px;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    padding: 10px 40px;
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  .searchIcon {
+    width: 25px;
+    position: absolute;
+    left: 10px;
+    opacity: 0.2;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.4;
+    }
+  }
+
+  .closeIcon {
+    width: 30px;
+    position: absolute;
+    right: 10px;
+    opacity: 0.2;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.4;
+    }
+  }
+}

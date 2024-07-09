@@ -1,0 +1,150 @@
+@import '../../scss/variables';
+@import '../../scss/normalize';
+
+.mainFooter {
+  min-width: 100vw;
+  //margin-top: auto;
+  margin-left: 50%;
+  margin-top: 50px;
+  transform: translate(-50%);
+  max-width: 100%;
+  background-color: #28282a;
+
+  .container {
+    margin: 0 auto;
+    width: 70%;
+    gap: 10%;
+    align-items: center;
+    align-content: center;
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+  }
+
+  .item {
+    span,
+    a {
+      font-size: 16px;
+      color: #fff;
+    }
+
+    width: 50%;
+    text-align: center;
+  }
+}
+
+.mobileFooter {
+  display: none;
+  padding: 2px 50px;
+
+  @media (max-width: 780px) {
+    display: flex;
+
+    min-width: 215px;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 250px;
+
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    width: 100vw;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 54px 0 scale-color($red, $alpha: -80%);
+    //padding: 5px 40px;
+    //height: 60px;
+    align-items: center;
+  }
+
+  .links {
+    display: flex;
+    min-width: 215px;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 250px;
+
+    @media (max-width: 780px) {
+      // position: fixed;
+      // bottom: 0;
+      // z-index: 10;
+      // width: 100vw;
+      // left: 0;
+      // background-color: #fff;
+      // box-shadow: 0 4px 54px 0 scale-color($red, $alpha: -80%);
+      // //padding: 5px 40px;
+      // height: 60px;
+      // align-items: center;
+      display: none;
+    }
+  }
+
+  .link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+    @include noselect();
+
+    &:hover {
+      color: $red;
+
+      svg.login {
+        fill: $red;
+      }
+
+      svg.wishlist {
+        stroke: $red;
+      }
+
+      svg.cart {
+        fill: $red;
+      }
+    }
+
+    svg.login {
+      fill: $black;
+      transition: all 0.1s ease-in-out;
+    }
+
+    svg.wishlist {
+      fill: #fff;
+      stroke: $black;
+      stroke-width: 1.2;
+      transition: all 0.1s ease-in-out;
+    }
+
+    svg.cart {
+      fill: $black;
+      transition: all 0.1s ease-in-out;
+    }
+
+    .image {
+      position: relative;
+
+      width: 30px;
+      height: 30px;
+    }
+
+    span {
+      font-size: 14px;
+      font-weight: 400;
+    }
+  }
+}
+
+.count {
+  position: absolute;
+  top: 0;
+  right: -8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: $red;
+  border-radius: 50%;
+  color: #fff;
+}
