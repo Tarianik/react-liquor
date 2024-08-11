@@ -17,6 +17,7 @@ import {
 } from '../../redux/Filter/slice';
 
 import styles from './Filters.module.scss';
+import useWhyDidYouUpdate from 'ahooks/lib/useWhyDidYouUpdate';
 
 const colors = ['красное', 'белое', 'розовое'];
 const countries = [
@@ -73,6 +74,12 @@ export const Filters = ({
   initialFilter: any;
   obj: any;
 }) => {
+  useWhyDidYouUpdate('Filters', {
+    filtersFull,
+    setFiltersFull,
+    initialFilter,
+    obj,
+  });
   const [firstFilter, setFirstFilter] = React.useState([]);
   const [isFilter, setIsFilter] = React.useState(false);
   const filters = useSelector((state: RootState) => state.filter);

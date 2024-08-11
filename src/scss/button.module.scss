@@ -153,5 +153,9 @@
       color: scale-color($red, $lightness: -8%);
       background-color: scale-color(#f2f5f7, $lightness: -5%);
     }
+
+    img {
+      width: 30px;
+    }
   }
 }

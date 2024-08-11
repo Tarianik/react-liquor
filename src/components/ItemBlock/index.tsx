@@ -8,6 +8,7 @@ import { WineItem } from '../../pages/Home';
 import { RootState, useAppDispatch } from '../../redux/store';
 import { plusItem, minusItem, CartItem } from '../../redux/Cart/slice';
 import { addItem, removeItem } from '../../redux/Wishlist/slice';
+import useWhyDidYouUpdate from 'ahooks/lib/useWhyDidYouUpdate';
 
 import styles from './ItemBlock.module.scss';
 import btnStyles from '../../scss/button.module.scss';
@@ -48,6 +49,18 @@ export const ItemBlock = ({
   price,
   count,
 }: ItemBlockProps) => {
+  useWhyDidYouUpdate('ItemBlock', {
+    id,
+    title,
+    rating,
+    country,
+    color,
+    sweetness,
+    volume,
+    imageUrl,
+    price,
+    count,
+  });
   const items = useSelector((state: RootState) => state.wishlist.items);
   const itemIds = items.map((el: WineItem) => el.id);
   const dispatch = useAppDispatch();

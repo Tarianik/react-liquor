@@ -71,7 +71,7 @@ export const ItemPage: React.FC = () => {
 
   return data ? (
     <div className={styles.itemPage}>
-      <span onClick={() => navigate('/')} className={styles.backToLink}>
+      <span onClick={() => navigate(-1)} className={styles.backToLink}>
         ← &nbsp;Назад к каталогу
       </span>
       <div className={styles.title}>Вино {data.title}</div>

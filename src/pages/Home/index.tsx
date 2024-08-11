@@ -27,6 +27,8 @@ import useWindowScrollPosition from '../../utils/useWindowScrollPosition';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { Status, setItems } from '../../redux/Wine/slice';
 
+import loadingSvg from '../../assets/img/load-more.gif';
+
 export interface WineItem extends Record<string, any> {
   id: string;
   imageUrl: string;
@@ -46,7 +48,7 @@ const pageSize = 9;
 const numberOfPages = 4;
 
 export const Home: React.FC = () => {
-  const [items, setItems] = React.useState([]);
+  const pam = React.useRef([]);
   const isMounted = React.useRef(false);
   const [status, setStatus] = React.useState(false);
   const navigate = useNavigate();
@@ -83,7 +85,7 @@ export const Home: React.FC = () => {
   //   }
   // }, [wine]);
 
-  const getWine = React.useCallback(async () => {
+  const getWine = async () => {
     const sorting = `${sortingValue.replace('-', '')}&`;
     const order = sortingValue.includes('-') ? 'DESC&' : 'ASC&';
     const search = searchValue !== '' ? `title_like=${searchValue}&` : '';
@@ -134,7 +136,7 @@ export const Home: React.FC = () => {
         size,
       })
     );
-  }, [currentPage, isLoading]);
+  };
 
   const fuck = React.useRef(0);
   const [aaa, setAaa] = React.useState(false);
@@ -211,7 +213,8 @@ export const Home: React.FC = () => {
   // }, []);
 
   React.useEffect(() => {
-    if (window.location.search) {
+    if (window.location.search && !wine.length) {
+      console.log('suka');
       const params = qs.parse(window.location.search.substring(1));
 
       const paramsAdapted: Record<string, any> = {};
@@ -333,32 +336,16 @@ export const Home: React.FC = () => {
     // const scroll = localStorage.getItem('scroll');
     // console.log(scroll);
     // if (scroll) window.scrollTo(0, +scroll);
-    let a: any;
+
     getWine()
       .then(() => {
         setIsLoading(true);
-        if (chichi.current) {
-        }
-        a = wine.map((el: WineItem, idx: number) => {
-          const foundItem = cartItems.find(
-            (cart: CartItem) => cart.id === el.id
-          );
-
-          return (
-            <ItemBlock
-              key={el.id}
-              {...el}
-              count={foundItem ? foundItem.count : 0}
-            />
-          );
-        });
-
-        chichi.current = true;
-        setIsLoading(false);
       })
       .catch(() => console.log('fuck'));
-    //@ts-ignore
-    setItems((prev) => [...prev, ...a]);
+
+    return () => {
+      dispatch(setItems([]));
+    };
   }, [
     searchValue,
     sortingValue,
@@ -383,49 +370,108 @@ export const Home: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const obj = {
-    colorCategory: new Set(),
-    countryCategory: new Set(),
-    sweetnessCategory: new Set(),
-    varietyCategory: new Set(),
-    brandCategory: new Set(),
-    volumeCategory: new Set(),
+  React.useEffect(() => {
+    console.log('isMount', isMounted);
+    if (isMounted.current) {
+      console.log('anus');
+      dispatch(setCurrentPage('1'));
+      pam.current = [];
+    }
+    isMounted.current = true;
+  }, [
+    searchValue,
+    sortingValue,
+    colorCategory,
+    countryCategory,
+    sweetnessCategory,
+    varietyCategory,
+    brandCategory,
+    volumeCategory,
+    priceRange,
+  ]);
+
+  const obj = React.useRef({
+    colorCategory: [],
+    countryCategory: [],
+    sweetnessCategory: [],
+    varietyCategory: [],
+    brandCategory: [],
+    volumeCategory: [],
 
     priceRange: [300, 1990],
-  };
-  wine.forEach((el) => {
-    for (let [key, value] of Object.entries(el)) {
-      switch (key) {
-        case 'color':
-        case 'country':
-        case 'sweetness':
-        case 'brand':
-        case 'volume':
-          obj[`${key}Category`].add(value);
-          break;
-        case 'variety':
-          value.forEach((el: string) => {
-            //@ts-ignore
-            obj[`${key}Category`].add(el);
-          });
-          break;
+  });
+  console.log(obj);
+  React.useEffect(() => {
+    if (wine.length) {
+      //@ts-ignore
+      for (let i in obj.current) {
+        //@ts-ignore
+        obj.current[i] = new Set(obj.current[i]);
+      }
+      wine.forEach((el) => {
+        for (let [key, value] of Object.entries(el)) {
+          switch (key) {
+            case 'color':
+            case 'country':
+            case 'sweetness':
+            case 'brand':
+            case 'volume':
+              //@ts-ignore
+              obj.current[`${key}Category`].add(value);
+              break;
+            case 'variety':
+              value.forEach((el: string) => {
+                //@ts-ignore
+                obj.current[`${key}Category`].add(el);
+              });
+              break;
+          }
+        }
+      });
+      for (let i in obj.current) {
+        //@ts-ignore
+        obj.current[i] = Array.from(obj.current[i]).sort();
       }
     }
-  });
-  for (let i in obj) {
+  }, [wine]);
+
+  document.addEventListener('auxclick', () =>
     //@ts-ignore
-    obj[i] = Array.from(obj[i]).sort();
-  }
-
-  const [initialFilter, setInitialFilter] = React.useState(obj);
-
+    document.querySelector('.contentMain')?.classList.add('someclass')
+  );
+  const [initialFilter, setInitialFilter] = React.useState(obj.current);
   React.useEffect(() => {
+    if (wine.length === 0) console.log('((#(#(#(#(#(#())))))))');
+  }, [wine]);
+  React.useEffect(() => {
+    console.log('status', bbb, 'wine:', wine);
+
     if (bbb === Status.SUCCEEDED && !isMounted.current) {
-      setInitialFilter(obj);
+      setInitialFilter(obj.current);
+
       isMounted.current = true;
     }
+    if (bbb === Status.SUCCEEDED) {
+      let a;
+      a = wine.map((el: WineItem, idx: number) => {
+        const foundItem = cartItems.find((cart: CartItem) => cart.id === el.id);
 
-    allWine.current.push(...wine);
+        return (
+          <ItemBlock
+            key={el.id}
+            {...el}
+            count={foundItem ? foundItem.count : 0}
+          />
+        );
+      });
+      console.log('1', document.readyState);
+      chichi.current = true;
+      //@ts-ignore
+      pam.current.push(...a);
+      console.log('now', 'wine:', wine, 'pam:', pam);
+      setIsLoading(false);
+      allWine.current.push(...wine);
+    }
   }, [wine]);
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -444,16 +490,18 @@ export const Home: React.FC = () => {
   //   });
 
   // }, [currentPage, wine]);
-  console.log(items);
+
   const skeletons = [...new Array(9)].map((_, idx) => <Skeleton key={idx} />);
+
   //console.log('ap', allWine, wine);
+  console.log('2', document.readyState);
   return (
     <div className={styles.container}>
       <Filters
         filtersFull={filtersFull}
         setFiltersFull={setFiltersFull}
         initialFilter={initialFilter}
-        obj={obj}
+        obj={obj.current}
       />
       <div className={styles.contentMain}>
         <span className={styles.contentTitle}>
@@ -558,7 +606,7 @@ export const Home: React.FC = () => {
         </div>
 
         <div className={styles.contentItems}>
-          {bbb === Status.SUCCEEDED ? items : skeletons}
+          {bbb === Status.SUCCEEDED || pam.current ? pam.current : skeletons}
         </div>
         {+currentPage < numberOfPages && (
           <button
@@ -567,7 +615,11 @@ export const Home: React.FC = () => {
             }
             className={`${btnStyles.btn} ${btnStyles.showMore}`}
           >
-            Показать еще
+            {bbb === Status.SUCCEEDED ? (
+              <span>Показать еще</span>
+            ) : (
+              <img src={loadingSvg} />
+            )}
           </button>
         )}
         {/* <Pagination
