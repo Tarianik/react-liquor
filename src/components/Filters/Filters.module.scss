@@ -6,7 +6,17 @@ body:has(.filters.active) {
 }
 
 .filters {
-  min-width: 243px;
+  .container {
+    min-width: 243px;
+
+    :first-child {
+      .filterPopup {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
 
   @media (max-width: 1020px) {
     display: none;
@@ -38,14 +48,6 @@ body:has(.filters.active) {
       display: block;
       z-index: 600;
       fill: red;
-    }
-  }
-
-  :first-child {
-    .filterPopup {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
   }
 }

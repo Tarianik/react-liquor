@@ -213,6 +213,7 @@ export const Home: React.FC = () => {
   // }, []);
 
   React.useEffect(() => {
+    console.log(window.location.search);
     if (window.location.search && !wine.length) {
       console.log('suka');
       const params = qs.parse(window.location.search.substring(1));
@@ -292,7 +293,37 @@ export const Home: React.FC = () => {
       _sort: sorting,
       _order: order,
     };
+    console.log('sorting', initialObj.current);
   }, [sortingValue]);
+
+  React.useEffect(() => {
+    function filterEmptyStr(obj: object) {
+      return Object.fromEntries(
+        Object.entries(obj).filter(([k, v]) => v !== '')
+      );
+    }
+
+    const sorting = `${sortingValue.replace('-', '')}`;
+    const order = sortingValue.includes('-') ? 'DESC' : 'ASC';
+
+    if (chichi.current) {
+      const objQuery = {
+        ...(sorting !== initialObj.current['_sort'] && {
+          _sort: sorting,
+          _order: order,
+        }),
+        ...(order !== initialObj.current['_order'] && {
+          _sort: sorting,
+          _order: order,
+        }),
+        ...(currentPage !== '1' && {
+          _page: currentPage,
+        }),
+      };
+      const query = qs.stringify(filterEmptyStr(objQuery));
+      navigate(`?${query}`);
+    }
+  }, [searchValue]);
 
   React.useEffect(() => {
     function filterEmptyStr(obj: object) {
@@ -307,17 +338,17 @@ export const Home: React.FC = () => {
     // }
     if (chichi.current) {
       const objQuery = {
-        ...(sorting !== initialObj.current['_sort'] && {
-          _sort: sorting,
-          _order: order,
-        }),
-        ...(order !== initialObj.current['_order'] && {
-          _sort: sorting,
-          _order: order,
-        }),
-        ...(currentPage !== '1' && {
-          _page: currentPage,
-        }),
+        // ...(sorting !== initialObj.current['_sort'] && {
+        //   _sort: sorting,
+        //   _order: order,
+        // }),
+        // ...(order !== initialObj.current['_order'] && {
+        //   _sort: sorting,
+        //   _order: order,
+        // }),
+        // ...(currentPage !== '1' && {
+        //   _page: currentPage,
+        // }),
         title_like: searchValue,
         color_like: colorCategory,
         country_like: countryCategory,
@@ -329,7 +360,12 @@ export const Home: React.FC = () => {
         price_lte: priceRange[1],
       };
       //@ts-ignore
-
+      console.log(
+        'objq',
+        sorting !== initialObj.current['_sort'],
+        sorting,
+        initialObj.current['_sort']
+      );
       const query = qs.stringify(filterEmptyStr(objQuery));
       navigate(`?${query}`);
     }
