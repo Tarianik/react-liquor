@@ -1,21 +1,22 @@
 import React from 'react';
-
-import styles from './Footer.module.scss';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { SignInModal } from '../SignInModal';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
-import { CartItem } from '../../redux/Cart/slice';
 import { WineItem } from '../../pages/Home';
+
+import type { RootState } from '../../redux/store';
+import type { CartItem } from '../../redux/Cart/slice';
+
+import styles from './Footer.module.scss';
 
 export const Footer: React.FC = () => {
   const [modal, setModal] = React.useState(false);
-  const cartItems = useSelector((state: RootState) => state.cart.items);
-  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
-
   const [countCart, setCountCart] = React.useState(0);
   const [countWishlist, setCountWishlist] = React.useState(0);
+
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
 
   React.useEffect(() => {
     setCountCart(

@@ -1,11 +1,8 @@
 @import '../../scss/variables';
 
-.cart {
-}
-
 .container {
-  margin: 0 auto;
   width: 832px;
+  margin: 0 auto;
 }
 
 .cartTop {
@@ -80,20 +77,19 @@
   button {
     width: 210px;
     height: 50px;
-
     border-radius: 30px;
     font-size: 16px;
   }
 }
 
 .returnBtn {
+  border: 1px solid #ccc;
   background-color: #fff;
   color: #ccc;
-  border: 1px solid #ccc;
 }
 
 .payBtn {
-  background-color: $red;
   border: 1px solid $red;
+  background-color: $red;
   color: #fff;
 }

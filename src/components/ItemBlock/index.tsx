@@ -1,14 +1,13 @@
 import React from 'react';
-
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import useWhyDidYouUpdate from 'ahooks/lib/useWhyDidYouUpdate';
 
 import { WineItem } from '../../pages/Home';
 
-import { RootState, useAppDispatch } from '../../redux/store';
+import { type RootState, useAppDispatch } from '../../redux/store';
 import { plusItem, minusItem, CartItem } from '../../redux/Cart/slice';
 import { addItem, removeItem } from '../../redux/Wishlist/slice';
-import useWhyDidYouUpdate from 'ahooks/lib/useWhyDidYouUpdate';
 
 import styles from './ItemBlock.module.scss';
 import btnStyles from '../../scss/button.module.scss';
@@ -62,8 +61,8 @@ export const ItemBlock = ({
     count,
   });
   const items = useSelector((state: RootState) => state.wishlist.items);
-  const itemIds = items.map((el: WineItem) => el.id);
   const dispatch = useAppDispatch();
+  const itemIds = items.map((el: WineItem) => el.id);
 
   const handlePlusClick = (e: React.MouseEvent) => {
     e.preventDefault();

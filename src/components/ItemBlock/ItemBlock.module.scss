@@ -3,8 +3,8 @@
 
 .itemBlock {
   width: auto;
-  margin: 10px 0 0 0;
   height: 400px;
+  margin: 10px 0 0 0;
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #fff;
@@ -12,11 +12,11 @@
 
 .container {
   position: relative;
-  padding: 15px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  padding: 15px 20px;
 
   @media (max-width: 500px) {
     padding: 15px 10px;
@@ -24,10 +24,10 @@
 }
 
 .title {
+  overflow: hidden;
+  max-height: 63px;
   font-size: 16px;
   font-weight: 500;
-  max-height: 63px;
-  overflow: hidden;
 
   @media (max-width: 500px) {
     font-size: 15px;
@@ -35,12 +35,12 @@
 }
 
 .tags {
-  font-size: 15px;
+  overflow: hidden;
+  max-height: 58px;
   font-weight: 300;
+  font-size: 15px;
   font-style: italic;
   color: #777;
-  max-height: 58px;
-  overflow: hidden;
 
   @media (max-width: 500px) {
     font-size: 14px;
@@ -56,14 +56,16 @@
 
 .rating {
   display: flex;
-  min-width: 55px;
-  margin-left: 4px;
-  align-items: center;
   justify-content: center;
-  background-color: #f4f4f4;
+  align-items: center;
+
   width: 50px;
   height: 29px;
+  min-width: 55px;
+  margin-left: 4px;
   border-radius: 15px;
+
+  background-color: #f4f4f4;
   color: #666;
 
   @media (max-width: 590px) {
@@ -100,10 +102,10 @@
 }
 
 .liquorImg {
-  height: 160px;
-  width: 106px;
-  object-fit: cover;
   display: block;
+  object-fit: cover;
+  width: 106px;
+  height: 160px;
   margin: 0 auto 10px;
 }
 
@@ -138,19 +140,19 @@
 
 .price {
   display: block;
+  margin: 0 auto 10px;
   text-align: center;
   font-size: 20px;
-  margin: 0 auto 10px;
 }
 
 .button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 auto;
-  padding: 0 18px;
   width: 130px;
   height: 35px;
+  margin: 0 auto;
+  padding: 0 18px;
   border: 1px solid #fe5f1e;
   border-radius: 30px;
   background-color: #fff;
@@ -171,13 +173,11 @@
   &Counter {
     display: flex;
     align-items: center;
+    border: none;
     color: #fff;
     background-color: #fff;
-    border: none;
     cursor: pointer;
-    // display: flex;
-    // align-items: center;
-    // justify-content: space-between;
+
     svg {
       path {
         fill: #fe5f1e;
@@ -219,44 +219,44 @@ $avatar-offset: 52 + 16;
 }
 
 .skeleton {
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
 
   &Title,
   &Tags,
   &Img,
   &Price,
   &Btn {
-    background-color: #f3f3f3;
     border-radius: 10px;
+    background-color: #f3f3f3;
 
     @include background-gradient;
     animation: shine-lines $animation-duration infinite linear;
   }
 
   &Title {
-    height: 20px;
     width: 100%;
+    height: 20px;
     margin-bottom: 10px;
   }
 
   &Tags {
-    height: 18px;
     width: 100%;
+    height: 18px;
     margin-bottom: 60px;
   }
 
   &Img {
-    height: 160px;
     width: 40%;
+    height: 160px;
     margin-bottom: 30px;
   }
 
   &Price {
-    height: 30px;
     width: 30%;
+    height: 30px;
     margin-bottom: 10px;
   }
 

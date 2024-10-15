@@ -1,14 +1,10 @@
 @import '../../scss/variables';
 
-.itemPage {
-  //padding-top: 20px;
-}
-
 .title {
   padding: 15px 0 20px;
+  margin-bottom: 80px;
   font-weight: 500;
   font-size: 34px;
-  margin-bottom: 80px;
 }
 
 .flex {
@@ -43,21 +39,20 @@
 
 .details {
   width: 300px;
-  //align-self: center;
 
   @media (max-width: 1200px) {
     width: 250px;
   }
 
   @media (max-width: 1080px) {
-    margin-top: 40px;
-    margin-left: 70px;
     order: 3;
     flex-basis: 70%;
+    margin-top: 40px;
+    margin-left: 70px;
 
     @media (max-width: 780px) {
-      width: 100%;
       align-self: flex-start;
+      width: 100%;
       margin-left: 0;
     }
   }
@@ -71,15 +66,15 @@
 }
 
 .ratingBlock {
-  margin-left: 10px;
   display: flex;
-  min-width: 55px;
   align-items: center;
   justify-content: center;
-  background-color: #f4f4f4;
   width: 60px;
   height: 29px;
+  min-width: 55px;
+  margin-left: 10px;
   border-radius: 10px;
+  background-color: #f4f4f4;
   color: #666;
 
   svg {
@@ -117,23 +112,17 @@
 
 .category {
   display: flex;
-  width: 50%;
   flex-direction: row;
+  width: 50%;
   color: lighten($color: #000000, $amount: 60%);
-  // span::after {
-  //   content: '';
-  //   width: 100%;
-  //   display: block;
-  //   border-bottom: 1px solid black;
-  // }
 }
 
 .buy {
   width: 380px;
-  padding: 25px;
-  background-color: #f4f4f4;
-  border-radius: 24px;
   min-height: 100px;
+  padding: 25px;
+  border-radius: 24px;
+  background-color: #f4f4f4;
 
   @media (max-width: 780px) {
     width: 100%;
@@ -149,10 +138,10 @@
 }
 
 .price {
+  margin-bottom: 12px;
   font-size: 32px;
   font-weight: 500;
   color: $red;
-  margin-bottom: 12px;
   text-align: center;
 }
 
@@ -164,9 +153,6 @@
     display: flex;
   }
 
-  h3 {
-  }
-
   i {
     font-style: normal;
     color: $red;
@@ -176,11 +162,10 @@
 
 .backToLink {
   padding-left: 20px;
-  //text-decoration: underline;
-  cursor: pointer;
   font-size: 18px;
   font-weight: 300;
   color: scale-color($black, $lightness: 40%);
+  cursor: pointer;
 
   &:hover {
     color: scale-color($black, $lightness: 60%);
@@ -188,23 +173,23 @@
 }
 
 .content:has(.notLoaded) {
-  height: 100vh;
   width: 100vw;
+  height: 100vh;
 }
 .notLoaded {
   content: '';
   position: absolute;
-  height: 100vh;
-  width: 100vw;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
   top: 50%;
   bottom: 50%;
+  left: 50%;
+  right: 50%;
+  width: 100vw;
+  height: 100vh;
+  margin-left: -50vw;
+  margin-right: -50vw;
   margin-top: -50vh;
   margin-bottom: -50vh;
-  background: url(../../assets/img/loading.gif) center / 200px no-repeat;
   visibility: visible;
   opacity: 1;
+  background: url(../../assets/img/loading.gif) center / 200px no-repeat;
 }

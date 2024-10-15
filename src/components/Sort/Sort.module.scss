@@ -1,5 +1,6 @@
 @import '../../scss/variables';
 @import '../../scss/normalize';
+
 .sort {
   position: relative;
   @include noselect();
@@ -52,15 +53,15 @@
 }
 
 .sortPopup {
-  border-radius: 5%;
-  z-index: 1;
   position: absolute;
-  border: 1px solid #ccc;
-  width: 160px;
-  padding: 4px 0;
-  background-color: #fff;
   top: 20px;
   left: 100px;
+  z-index: 1;
+  width: 160px;
+  padding: 4px 0;
+  border: 1px solid #ccc;
+  border-radius: 5%;
+  background-color: #fff;
 
   li {
     padding: 4px 0 4px 10px;

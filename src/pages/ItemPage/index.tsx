@@ -1,29 +1,31 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 
-import { useParams } from 'react-router-dom';
-
 import { WineItem } from '../Home';
+import { NotFound } from '../NotFound';
+
+import { type RootState, useAppDispatch } from '../../redux/store';
+import { addItem, removeItem } from '../../redux/Wishlist/slice';
+import { CartItem, minusItem, plusItem } from '../../redux/Cart/slice';
 
 import styles from './ItemPage.module.scss';
 import btnStyles from '../../scss/button.module.scss';
-import { RootState, useAppDispatch } from '../../redux/store';
-import { addItem, removeItem } from '../../redux/Wishlist/slice';
-import { useSelector } from 'react-redux';
-import { CartItem, minusItem, plusItem } from '../../redux/Cart/slice';
-import { NotFound } from '../NotFound';
 
 export const ItemPage: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const items = useSelector((state: RootState) => state.wishlist.items);
-  const itemIds = items.map((el: WineItem) => el.id);
   const [data, setData] = React.useState<WineItem>();
   const [error, setError] = React.useState(false);
+
+  const items = useSelector((state: RootState) => state.wishlist.items);
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const dispatch = useAppDispatch();
+
+  const itemIds = items.map((el: WineItem) => el.id);
+  const ourItem = cartItems.find((el: CartItem) => el.id === id);
+
   const navigate = useNavigate();
   const { id } = useParams();
-  const cartItems = useSelector((state: RootState) => state.cart.items);
-  const ourItem = cartItems.find((el: CartItem) => el.id === id);
 
   React.useEffect(() => {
     async function getWineData() {

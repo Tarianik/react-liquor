@@ -9,13 +9,12 @@
   padding-inline-start: 40px;
   unicode-bidi: isolate;
   color: #28282a;
-
   letter-spacing: normal;
   text-transform: none;
-  li {
-    list-style: unset !important;
 
+  li {
     display: list-item;
+    list-style: unset !important;
     text-align: -webkit-match-parent;
     unicode-bidi: isolate;
   }

@@ -12,8 +12,10 @@ import {
 } from '../../components';
 import { sortings } from '../../components/Sort';
 
-import { RootState, useAppDispatch } from '../../redux/store';
+import { type RootState, useAppDispatch } from '../../redux/store';
 import { fetchWine } from '../../redux/Wine/asyncActions';
+import { Status, setItems } from '../../redux/Wine/slice';
+import { CartItem } from '../../redux/Cart/slice';
 import {
   setCurrentPage,
   setFilters,
@@ -22,12 +24,9 @@ import {
 
 import styles from './Home.module.scss';
 import btnStyles from '../../scss/button.module.scss';
-import { CartItem } from '../../redux/Cart/slice';
+import loadingSvg from '../../assets/img/load-more.gif';
 import useWindowScrollPosition from '../../utils/useWindowScrollPosition';
 import { useLocalStorage } from '@uidotdev/usehooks';
-import { Status, setItems } from '../../redux/Wine/slice';
-
-import loadingSvg from '../../assets/img/load-more.gif';
 
 export interface WineItem extends Record<string, any> {
   id: string;
@@ -48,17 +47,15 @@ const pageSize = 9;
 const numberOfPages = 4;
 
 export const Home: React.FC = () => {
-  const pam = React.useRef([]);
-  const isMounted = React.useRef(false);
-  const [status, setStatus] = React.useState(false);
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const chichi = React.useRef(false);
   const [filtersFull, setFiltersFull] = React.useState(false);
+  const [status, setStatus] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
 
-  const wine = useSelector((state: RootState) => state.wine.items);
-  const allWine = React.useRef<WineItem[]>([]);
+  const wine = React.useRef([]);
+  const isMounted = React.useRef(false);
+  const chichi = React.useRef(false);
+
+  const items = useSelector((state: RootState) => state.wine.items);
   const bbb = useSelector((state: RootState) => state.wine.status);
   const sortingValue = useSelector(
     (state: RootState) => state.filter.sorting.feature
@@ -74,6 +71,9 @@ export const Home: React.FC = () => {
     priceRange,
     currentPage,
   } = useSelector((state: RootState) => state.filter);
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
 
   //useWindowScrollPosition('scroll', !isLoading);
 
@@ -83,7 +83,7 @@ export const Home: React.FC = () => {
   //     const prices = wine.map((el: any) => el.price);
   //     dispatch(setPriceRange([Math.min(...prices), Math.max(...prices)]));
   //   }
-  // }, [wine]);
+  // }, [items]);
 
   const getWine = async () => {
     const sorting = `${sortingValue.replace('-', '')}&`;
@@ -138,6 +138,7 @@ export const Home: React.FC = () => {
     );
   };
 
+  // #region ------------------------- Scroll ------------------------------------
   const fuck = React.useRef(0);
   const [aaa, setAaa] = React.useState(false);
   React.useEffect(() => {
@@ -212,9 +213,37 @@ export const Home: React.FC = () => {
   //   };
   // }, []);
 
+  // React.useEffect(() => {
+  //   const handleScrolla = () => {
+  //     let documentHeight = document.body.scrollHeight;
+  //     let currentScroll = window.scrollY + window.innerHeight;
+  //     // When the user is [modifier]px from the bottom, fire the event.
+  //     let modifier = 200;
+  //     if (
+  //       currentScroll + modifier > documentHeight &&
+  //       Number(currentPage) <= 4
+  //     ) {
+  //       dispatch(setCurrentPage(String(Number(currentPage) + 1)));
+
+  //       // getWine().then(() => {
+  //       //   dispatch(
+  //       //     setItems((prevItems: any) => {
+  //       //       console.log('vot', [...prevItems, ...temp]);
+  //       //       return [...prevItems, ...temp];
+  //       //     })
+  //       //   );
+  //       // });
+  //     }
+  //   };
+  //   window.addEventListener('scroll', handleScrolla);
+  //   return () => window.removeEventListener('scroll', handleScrolla);
+  // }, [getWine]);
+  // #endregion
+
+  // #region ---------------------- Parse params ---------------------------------
   React.useEffect(() => {
     console.log(window.location.search);
-    if (window.location.search && !wine.length) {
+    if (window.location.search && !items.length) {
       console.log('suka');
       const params = qs.parse(window.location.search.substring(1));
 
@@ -246,46 +275,24 @@ export const Home: React.FC = () => {
       dispatch(setFilters({ ...paramsAdapted, sorting }));
     }
   }, []);
+  //#endregion
 
-  const [aga, setAga] = React.useState({
-    colorCategory: new Set(),
-    countryCategory: new Set(),
-    sweetnessCategory: new Set(),
-    varietyCategory: new Set(),
-    brandCategory: new Set(),
-    volumeCategory: new Set(),
+  // MARK: --------------------- Filters fullscreen ------------------------------
+  React.useEffect(() => {
+    const handleResize = (e: Event) => {
+      if (window.innerWidth > 1020) {
+        setFiltersFull(false);
+      }
+    };
 
-    priceRange: [340, 1990],
-  });
+    window.addEventListener('resize', handleResize);
 
-  // React.useEffect(() => {
-  //   const handleScrolla = () => {
-  //     let documentHeight = document.body.scrollHeight;
-  //     let currentScroll = window.scrollY + window.innerHeight;
-  //     // When the user is [modifier]px from the bottom, fire the event.
-  //     let modifier = 200;
-  //     if (
-  //       currentScroll + modifier > documentHeight &&
-  //       Number(currentPage) <= 4
-  //     ) {
-  //       dispatch(setCurrentPage(String(Number(currentPage) + 1)));
-
-  //       // getWine().then(() => {
-  //       //   dispatch(
-  //       //     setItems((prevItems: any) => {
-  //       //       console.log('vot', [...prevItems, ...temp]);
-  //       //       return [...prevItems, ...temp];
-  //       //     })
-  //       //   );
-  //       // });
-  //     }
-  //   };
-  //   window.addEventListener('scroll', handleScrolla);
-  //   return () => window.removeEventListener('scroll', handleScrolla);
-  // }, [getWine]);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const initialObj = React.useRef<any>({});
 
+  // MARK: --------------- Add sort & order to initialObj ------------------------
   React.useEffect(() => {
     const sorting = `${sortingValue.replace('-', '')}`;
     const order = sortingValue.includes('-') ? 'DESC' : 'ASC';
@@ -293,7 +300,6 @@ export const Home: React.FC = () => {
       _sort: sorting,
       _order: order,
     };
-    console.log('sorting', initialObj.current);
   }, [sortingValue]);
 
   React.useEffect(() => {
@@ -333,9 +339,7 @@ export const Home: React.FC = () => {
     }
     const sorting = `${sortingValue.replace('-', '')}`;
     const order = sortingValue.includes('-') ? 'DESC' : 'ASC';
-    // if (!chichi.current) {
 
-    // }
     if (chichi.current) {
       const objQuery = {
         // ...(sorting !== initialObj.current['_sort'] && {
@@ -394,24 +398,13 @@ export const Home: React.FC = () => {
     priceRange,
     currentPage,
   ]);
-  React.useEffect(() => {
-    const handleResize = (e: Event) => {
-      if (window.innerWidth > 1020) {
-        setFiltersFull(false);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   React.useEffect(() => {
     console.log('isMount', isMounted);
     if (isMounted.current) {
       console.log('anus');
       dispatch(setCurrentPage('1'));
-      pam.current = [];
+      wine.current = [];
     }
     isMounted.current = true;
   }, [
@@ -438,13 +431,13 @@ export const Home: React.FC = () => {
   });
   console.log(obj);
   React.useEffect(() => {
-    if (wine.length) {
+    if (items.length) {
       //@ts-ignore
       for (let i in obj.current) {
         //@ts-ignore
         obj.current[i] = new Set(obj.current[i]);
       }
-      wine.forEach((el) => {
+      items.forEach((el) => {
         for (let [key, value] of Object.entries(el)) {
           switch (key) {
             case 'color':
@@ -469,18 +462,14 @@ export const Home: React.FC = () => {
         obj.current[i] = Array.from(obj.current[i]).sort();
       }
     }
-  }, [wine]);
+  }, [items]);
 
-  document.addEventListener('auxclick', () =>
-    //@ts-ignore
-    document.querySelector('.contentMain')?.classList.add('someclass')
-  );
   const [initialFilter, setInitialFilter] = React.useState(obj.current);
   React.useEffect(() => {
-    if (wine.length === 0) console.log('((#(#(#(#(#(#())))))))');
-  }, [wine]);
+    if (items.length === 0) console.log('((#(#(#(#(#(#())))))))');
+  }, [items]);
   React.useEffect(() => {
-    console.log('status', bbb, 'wine:', wine);
+    console.log('status', bbb, 'items:', items);
 
     if (bbb === Status.SUCCEEDED && !isMounted.current) {
       setInitialFilter(obj.current);
@@ -489,7 +478,7 @@ export const Home: React.FC = () => {
     }
     if (bbb === Status.SUCCEEDED) {
       let a;
-      a = wine.map((el: WineItem, idx: number) => {
+      a = items.map((el: WineItem, idx: number) => {
         const foundItem = cartItems.find((cart: CartItem) => cart.id === el.id);
 
         return (
@@ -503,12 +492,11 @@ export const Home: React.FC = () => {
       console.log('1', document.readyState);
       chichi.current = true;
       //@ts-ignore
-      pam.current.push(...a);
-      console.log('now', 'wine:', wine, 'pam:', pam);
+      wine.current.push(...a);
+      console.log('now', 'wine:', items, 'wine:', wine);
       setIsLoading(false);
-      allWine.current.push(...wine);
     }
-  }, [wine]);
+  }, [items]);
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
@@ -642,7 +630,7 @@ export const Home: React.FC = () => {
         </div>
 
         <div className={styles.contentItems}>
-          {bbb === Status.SUCCEEDED || pam.current ? pam.current : skeletons}
+          {bbb === Status.SUCCEEDED || wine.current ? wine.current : skeletons}
         </div>
         {+currentPage < numberOfPages && (
           <button

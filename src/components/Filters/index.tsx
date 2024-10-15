@@ -1,11 +1,11 @@
 import React, { Dispatch, SetStateAction } from 'react';
-
 import { useSelector } from 'react-redux';
+import useWhyDidYouUpdate from 'ahooks/lib/useWhyDidYouUpdate';
 
 import { Filter } from './Filter';
 import { FilterSlider } from './FilterSlider';
 
-import { RootState, useAppDispatch } from '../../redux/store';
+import { type RootState, useAppDispatch } from '../../redux/store';
 import {
   setCountryCategory,
   setColorCategory,
@@ -17,7 +17,6 @@ import {
 } from '../../redux/Filter/slice';
 
 import styles from './Filters.module.scss';
-import useWhyDidYouUpdate from 'ahooks/lib/useWhyDidYouUpdate';
 
 const colors = ['красное', 'белое', 'розовое'];
 const countries = [
@@ -83,6 +82,19 @@ export const Filters = ({
   const [firstFilter, setFirstFilter] = React.useState([]);
   const [isFilter, setIsFilter] = React.useState(false);
   const filters = useSelector((state: RootState) => state.filter);
+  const dispatch = useAppDispatch();
+
+  const resetFilters = () => {
+    dispatch(setPriceRange([]));
+    dispatch(setColorCategory([]));
+    dispatch(setCountryCategory([]));
+    dispatch(setSweetnessCategory([]));
+    dispatch(setVarietyCategory([]));
+    dispatch(setBrandCategory([]));
+    dispatch(setPriceRange([340, 1990]));
+    dispatch(setVolumeCategory([]));
+  };
+
   React.useEffect(() => {
     for (const [key, value] of Object.entries(filters)) {
       if (
@@ -96,17 +108,7 @@ export const Filters = ({
       setIsFilter(false);
     }
   }, [filters]);
-  const dispatch = useAppDispatch();
-  const resetFilters = () => {
-    dispatch(setPriceRange([]));
-    dispatch(setColorCategory([]));
-    dispatch(setCountryCategory([]));
-    dispatch(setSweetnessCategory([]));
-    dispatch(setVarietyCategory([]));
-    dispatch(setBrandCategory([]));
-    dispatch(setPriceRange([340, 1990]));
-    dispatch(setVolumeCategory([]));
-  };
+
   return (
     <div className={`${styles.filters} ${filtersFull ? styles.active : ''}`}>
       <div className={styles.container}>

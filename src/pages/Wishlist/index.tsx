@@ -1,17 +1,25 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { Sort, Filters, ItemBlock, WishlistEmpty } from '../../components';
 import { WineItem } from '../../pages/Home';
 
-import { RootState } from '../../redux/store';
-
-import styles from '../Home/Home.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { type RootState } from '../../redux/store';
 import { CartItem } from '../../redux/Cart/slice';
 
+import styles from '../Home/Home.module.scss';
+
 export const Wishlist: React.FC = () => {
+  const wine: WineItem[] = useSelector(
+    (state: RootState) => state.wishlist.items
+  );
+
+  if (!wine.length) {
+    return <WishlistEmpty />;
+  }
+
+  const [filtersFull, setFiltersFull] = React.useState(false);
   const {
     searchValue,
     colorCategory,
@@ -22,16 +30,9 @@ export const Wishlist: React.FC = () => {
     volumeCategory,
     priceRange,
   } = useSelector((state: RootState) => state.filter);
-  const [filtersFull, setFiltersFull] = React.useState(false);
-  const navigate = useNavigate();
-  const wine: WineItem[] = useSelector(
-    (state: RootState) => state.wishlist.items
-  );
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
-  if (!wine.length) {
-    return <WishlistEmpty />;
-  }
+  const navigate = useNavigate();
 
   const items = wine.map((el: WineItem, idx: number) => {
     const foundItem = cartItems.find((cart: CartItem) => cart.id === el.id);

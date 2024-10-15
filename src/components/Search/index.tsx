@@ -1,19 +1,18 @@
 import React from 'react';
-
-import { RootState, useAppDispatch } from '../../redux/store';
-import { setSearchValue } from '../../redux/Filter/slice';
-
-import styles from './Search.module.scss';
 import { useSelector } from 'react-redux';
+
+import { type RootState, useAppDispatch } from '../../redux/store';
+import { setSearchValue } from '../../redux/Filter/slice';
 import { debounce } from '../../utils/debounce';
 
+import styles from './Search.module.scss';
+
 export const Search: React.FC = () => {
+  const [value, setValue] = React.useState('');
   const inputRef = React.useRef<HTMLInputElement>(null);
   const searchValue = useSelector(
     (state: RootState) => state.filter.searchValue
   );
-  const [value, setValue] = React.useState('');
-
   const dispatch = useAppDispatch();
 
   const debounced = React.useMemo(
@@ -34,6 +33,7 @@ export const Search: React.FC = () => {
     dispatch(setSearchValue(''));
     inputRef.current?.focus();
   };
+
   return (
     <div className={styles.search}>
       <input

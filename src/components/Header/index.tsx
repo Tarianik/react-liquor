@@ -1,26 +1,26 @@
 import React from 'react';
-
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { Search } from '../Search';
 import { SignInModal } from '../SignInModal';
-
-import { RootState } from '../../redux/store';
-
-import styles from './Header.module.scss';
-import { CartItem } from '../../redux/Cart/slice';
 import { WineItem } from '../../pages/Home';
 
-export const Header: React.FC = () => {
-  //const formRef = React.useRef<HTMLDivElement>(null);
-  const cartItems = useSelector((state: RootState) => state.cart.items);
-  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
-  const [modal, setModal] = React.useState(false);
-  const isMounted = React.useRef(false);
+import type { RootState } from '../../redux/store';
+import type { CartItem } from '../../redux/Cart/slice';
 
+import styles from './Header.module.scss';
+
+export const Header: React.FC = () => {
+  const [modal, setModal] = React.useState(false);
   const [countCart, setCountCart] = React.useState(0);
   const [countWishlist, setCountWishlist] = React.useState(0);
+
+  const isMounted = React.useRef(false);
+  //const formRef = React.useRef<HTMLDivElement>(null);
+
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
 
   React.useEffect(() => {
     if (isMounted.current) {

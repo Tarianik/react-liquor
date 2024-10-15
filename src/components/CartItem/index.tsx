@@ -1,13 +1,11 @@
 import React from 'react';
-
-import { WineItem } from '../../pages/Home';
-import { CartItem as CartItemType } from '../../redux/Cart/slice';
+import { Link } from 'react-router-dom';
 
 import { useAppDispatch } from '../../redux/store';
+import { CartItem as CartItemType } from '../../redux/Cart/slice';
 import { plusItem, minusItem, removeItems } from '../../redux/Cart/slice';
 
 import styles from './CartItem.module.scss';
-import { Link } from 'react-router-dom';
 
 export const CartItem: React.FC<CartItemType> = ({
   id,

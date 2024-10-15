@@ -1,10 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
-import { RootState, useAppDispatch } from '../../redux/store';
+import { type RootState, useAppDispatch } from '../../redux/store';
 import { setSorting, SortItem } from '../../redux/Filter/slice';
 
 import styles from './Sort.module.scss';
-import { useSelector } from 'react-redux';
 
 export const sortings = [
   { feature: 'rating', name: '▲ рейтингу' },
@@ -16,10 +16,10 @@ export const sortings = [
 ];
 
 export const Sort: React.FC = () => {
-  const sorting = useSelector((state: RootState) => state.filter.sorting.name);
-  const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
   const popupRef = React.useRef<HTMLDivElement>(null);
+  const sorting = useSelector((state: RootState) => state.filter.sorting.name);
+  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     document.body.addEventListener('click', (e) => {

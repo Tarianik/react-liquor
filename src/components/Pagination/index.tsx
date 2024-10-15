@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import { usePagination } from '../../utils/usePagination';
 
 import styles from './Pagination.module.scss';
-import { usePagination } from '../../utils/usePagination';
 
 type PaginationProps = {
   className?: string;
@@ -33,6 +33,8 @@ export const Pagination = ({
     return null;
   }
 
+  let lastPage = paginationRange[paginationRange.length - 1];
+
   const onNext = () => {
     onPageChange(currentPage + 1);
   };
@@ -41,7 +43,6 @@ export const Pagination = ({
     onPageChange(currentPage - 1);
   };
 
-  let lastPage = paginationRange[paginationRange.length - 1];
   return (
     <div className={`${styles.paginationContainer}`}>
       <div

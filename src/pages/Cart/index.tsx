@@ -2,19 +2,19 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { RootState, useAppDispatch } from '../../redux/store';
-import { clearCart } from '../../redux/Cart/slice';
-
-import { CartEmpty, CartItem } from '../../components/';
 import { WineItem } from '../Home';
+import { CartEmpty, CartItem } from '../../components/';
+
+import { type RootState, useAppDispatch } from '../../redux/store';
+import { clearCart } from '../../redux/Cart/slice';
 import { CartItem as CartItemType } from '../../redux/Cart/slice';
 
 import styles from './Cart.module.scss';
 import btnStyles from '../../scss/button.module.scss';
 
 export const Cart: React.FC = () => {
-  const dispatch = useAppDispatch();
   const { items, totalPrice } = useSelector((state: RootState) => state.cart);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   return (

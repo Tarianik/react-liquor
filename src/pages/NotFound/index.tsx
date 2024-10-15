@@ -1,8 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import styles from './NotFound.module.scss';
 import btnStyles from '../../scss/button.module.scss';
-import { useNavigate } from 'react-router-dom';
 
 export const NotFound: React.FC = () => {
   const navigate = useNavigate();

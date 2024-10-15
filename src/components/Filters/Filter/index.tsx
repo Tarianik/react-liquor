@@ -1,12 +1,11 @@
 import React, { Dispatch, SetStateAction } from 'react';
-
 import { useSelector } from 'react-redux';
-import { RootState, useAppDispatch } from '../../../redux/store';
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+
+import { type RootState, useAppDispatch } from '../../../redux/store';
+import { Status } from '../../../redux/Wine/slice';
 
 import styles from '../Filters.module.scss';
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
-import { FilterState, setFilters } from '../../../redux/Filter/slice';
-import { Status } from '../../../redux/Wine/slice';
 
 type FilterProps = {
   initialValue: any;
@@ -27,18 +26,12 @@ export const Filter = ({
   firstFilter,
   setFirstFilter,
 }: FilterProps) => {
-  const status = useSelector((state: RootState) => state.wine.status);
+  const [open, setOpen] = React.useState(false);
   const prev = React.useRef<any>(value);
+  const status = useSelector((state: RootState) => state.wine.status);
   const selector = useSelector((state: RootState) => state.filter);
   const dispatch = useAppDispatch();
-  const [open, setOpen] = React.useState(false);
-  const addCategory = React.useCallback(
-    (el: string | number, e: React.MouseEvent<HTMLLabelElement>) => {
-      e.preventDefault();
-      dispatch(setFunction(el));
-    },
-    []
-  );
+
   React.useEffect(() => {
     if (status === Status.SUCCEEDED) {
       initialValue.map((el: any) => {
@@ -62,6 +55,15 @@ export const Filter = ({
       }
     }
   }, [selector, status]);
+
+  const addCategory = React.useCallback(
+    (el: string | number, e: React.MouseEvent<HTMLLabelElement>) => {
+      e.preventDefault();
+      dispatch(setFunction(el));
+    },
+    []
+  );
+
   return (
     <div className={styles.filter}>
       <div

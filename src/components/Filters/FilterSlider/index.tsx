@@ -1,38 +1,33 @@
 import React, { SyntheticEvent } from 'react';
 import Slider from '@mui/material/Slider';
-
 import { useSelector } from 'react-redux';
 
-import { RootState, useAppDispatch } from '../../../redux/store';
+import { type RootState, useAppDispatch } from '../../../redux/store';
 import { setPriceRange } from '../../../redux/Filter/slice';
 
 import styles from '../Filters.module.scss';
 
 export const FilterSlider = ({ name }: { name: string }) => {
-  const dispatch = useAppDispatch();
   const priceRange = useSelector((state: RootState) => state.filter.priceRange);
-
+  const [from, setFrom] = React.useState(priceRange[0]);
+  const [to, setTo] = React.useState(priceRange[1]);
   const [open, setOpen] = React.useState(true);
   const [value, setValue] = React.useState<number[]>([
     priceRange[0],
     priceRange[1],
   ]);
+  const fromRef = React.useRef(null);
+  const toRef = React.useRef(null);
+  const priceRangeRef = React.useRef([...priceRange]);
+  const sliderRef = React.useRef(null);
+
+  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     setValue([priceRange[0], priceRange[1]]);
     setFrom(priceRange[0]);
     setTo(priceRange[1]);
   }, [priceRange]);
-
-  const [from, setFrom] = React.useState(priceRange[0]);
-  const [to, setTo] = React.useState(priceRange[1]);
-
-  const fromRef = React.useRef(null);
-  const toRef = React.useRef(null);
-
-  const priceRangeRef = React.useRef([...priceRange]);
-
-  const sliderRef = React.useRef(null);
 
   const handleChange = (e: Event, newValue: number | number[]) => {
     setValue(newValue as number[]);
